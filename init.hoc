@@ -1,0 +1,38 @@
+load_file("nrngui.hoc")
+load_file("cable.hoc")
+load_file("init.ses")
+
+secondorder = 2
+
+len = 0
+
+objref v1, v2, tvec
+
+v1 = new Vector(2000)
+v2 = new Vector(2000)
+tvec = new Vector(2000)
+tvec.record(&t)
+
+// iterpolated time at which voltage = threshold
+func where() {local i, v1, v2, t1, t2, x
+	i = $o1.indwhere(">=", $2)
+	v1 = $o1.x[i-1]
+	v2 = $o1.x[i]
+	t1 = tvec.x[i-1]
+	t2 = tvec.x[i]
+	x = ($2 - v1)/(v2 - v1)
+	return t1 + x*(t2 - t1)
+}
+
+func velocity() {local i, thresh // m/s
+	v1.record(&node[10].v(.5))
+	v2.record(&node[11].v(.5))
+	thresh = 50 - 65
+	run()
+	t1 = where(v1, thresh)
+	t2 = where(v2, thresh)
+	return (myelin[10].L + node[10].L)/(t2 - t1) * (1e-3)
+}
+
+normal_vel = velocity()
+print "velocity of standard model = ", normal_vel, " (m/s)"

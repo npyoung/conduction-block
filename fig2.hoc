@@ -1,0 +1,112 @@
+load_file("nrngui.hoc")
+load_file("init.hoc")
+
+//relative sensitivities
+
+func nodal_cap() {local sav, y
+	sav = node[0].cm
+	forsec nodes cm*=$1
+//	print "nodal cm = ", node[0].cm
+	y = velocity()
+	forsec nodes cm = sav
+	return y
+}
+
+func myelin_cap() {local sav, y
+	sav = myelin[0].cm
+	forsec myelins cm*=$1
+//	print "myelin cm = ", myelin[0].cm
+	y = velocity()
+	forsec myelins cm = sav
+	return y
+}
+
+func axoplasm_cond() {local sav, y
+	sav = node[0].Ra
+	forall Ra /= $1
+//	print "axoplasm cond = ", 1/node[0].Ra
+	y = velocity()
+	forall Ra = sav
+	return y
+}
+
+func internode_length() {local sav, y
+	sav = myelin[0].L
+	forsec myelins L*=$1
+//	print "internode length = ", myelin[0].L
+	y = velocity()
+	forsec myelins L = sav
+	return y
+}
+
+func nodal_area() {local sav, y
+	sav = node[0].L
+	forsec nodes L*=$1
+//	print "nodal length = ", node[0].L
+	y = velocity()
+	forsec nodes L = sav
+	return y
+}
+
+func gbar() {local savgna, savgk, savgl, y
+	savgna = node[0].gnabar_hh
+	savgk = node[0].gkbar_hh
+	savgl = node[0].gl_hh
+	forsec nodes {
+		gnabar_hh *= $1
+		gkbar_hh *= $1
+		gl_hh *= $1
+	}
+//	print "gbar factor = ", $1
+	y = velocity()
+	forsec nodes {
+		gnabar_hh = savgna
+		gkbar_hh = savgk
+		gl_hh = savgl
+	}		
+	return y
+}
+
+func diameter() {local savd, savc, savg, y
+	// number of wraps are proportional to diameter and therefore
+	// myelin capacitance and conductance per unit area is inversely proportional
+	savd = node[0].diam
+	savc = myelin[0].cm
+	savg = myelin[0].g_pas
+	forall diam *= $1
+	forsec myelins {
+		cm /= $1
+		g_pas /= $1
+	}
+//	print "diam = ", node[0].diam
+	y = velocity()
+	forall 	diam = savd
+	forsec myelins {
+		cm = savc
+		g_pas = savg
+	}
+	return y
+}
+
+objref g
+load_file(1, "fig2.ses")
+strdef tstr
+proc pl() {
+	g.beginline
+	for (x=$2; x <= $3; x += .1) {
+		sprint(tstr, "y=%s(x)/normal_vel", $s1)
+		execute(tstr)
+		g.line(x, y)
+		g.flush
+	}
+}
+
+pl("nodal_cap", .4, 1)
+pl("myelin_cap", 1, 1.6)
+pl("axoplasm_cond", .9, 1.7)
+pl("internode_length", .5, 1)
+pl("nodal_area", .3, 1)
+pl("gbar", .4, 1.1)
+pl("diameter", .9, 1.5)
+
+print "normal velocity = ", velocity()

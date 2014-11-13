@@ -1,0 +1,13 @@
+load_file("nrngui.hoc")
+load_file("init.hoc")
+
+xpanel("Figures for Moore et. al, 19787")
+xradiobutton("2", "restart(\"fig2\")")
+xradiobutton("3", "restart(\"fig3\")")
+xpanel(5,100)
+
+proc restart() {local i
+	objref graphItem, save_window_
+	sprint(tstr, "%s.hoc", $s1)
+	load_file(1, tstr)
+}

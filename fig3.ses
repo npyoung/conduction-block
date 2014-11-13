@@ -1,0 +1,21 @@
+load_file("nrngui.hoc")
+objectvar save_window_, rvp_
+objectvar scene_vector_[4]
+objectvar ocbox_, ocbox_list_, scene_, scene_list_
+{ocbox_list_ = new List()  scene_list_ = new List()}
+{pwman_place(0,0,0)}
+{
+save_window_ = new Graph(0)
+save_window_.size(0,40,1,2)
+scene_vector_[3] = save_window_
+{save_window_.view(0, 1, 40, 1, 733, 50, 322.56, 444.16)}
+g = save_window_
+save_window_.save_name("g")
+save_window_.label(0.389881, 0.108069, "TEMP (degC)", 2, 1, 0, 0, 1)
+save_window_.label(30.4285, 1.634, "All Q10's", 1, 1, 0, 0, 1)
+save_window_.label(30.4285, 1.5562, "Rates, axoplasm", 1, 1, 0, 0, 1)
+save_window_.label(33.5714, 1.47838, "Rates only", 1, 1, 0, 0, 1)
+save_window_.label(0.0267857, 0.942363, "log10(Velocity (m/s))", 2, 1, 0, 0, 1)
+}
+objectvar scene_vector_[1]
+{doNotify()}

@@ -1,0 +1,14 @@
+Moore, Joyner, Brill, Waxman, and Najar-Joa. (1978) Simulations of
+conduction in uniform myelinated fibers: Relative sensitivity to
+changes in nodal and internodal parameters.
+Biophys. J. 21:147-160.
+
+This model reproduces figures 2 and 3.
+The standard temperature for the conductance Q10's is not specified
+in the paper. However, fig 3 seems to give quantitatively similar results
+when the choice for the "All Q10's" curve is a standard temperature of 0 degC.
+
+The NEURON implementation of this model was prepared by Michael Hines.
+Questions about details of this implementation should be addressed to him
+at michael.hines@yale.edu.
+

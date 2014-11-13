@@ -1,0 +1,65 @@
+load_file("nrngui.hoc")
+load_file("init.hoc")
+
+// temperature sensitivity
+// (standard temperature is 18.5 degC)
+
+proc q10rates() {
+	celsius = $1
+}
+
+proc q10axoplasm() { local q10, fac
+	q10 = 1.3
+	fac = q10^(($1 - 18.5)/10)
+	forall Ra = 100 / fac
+}
+
+proc q10cond() {local q10, fac
+	q10 = 1.4
+	fac = q10^(($1 - 0)/10)
+	forsec nodes {
+		gnabar_hh = 1.2 * fac
+		gkbar_hh = .36 * fac
+		gl_hh = .003 * fac
+	}
+}
+
+func fig3vel() {
+	if ($2 > 0) {
+		q10rates($1)
+	}else{
+		q10rates(18.5)
+	}
+	if ($2 > 1) {
+		q10axoplasm($1)
+	}else{
+		q10axoplasm(18.5)
+	}
+	if ($2 == 3) {
+		q10cond($1)
+	}else{
+		q10cond(0)
+	}
+	return velocity()
+}
+		
+objref g, min, max
+load_file(1, "fig3.ses")
+proc pl() {local i, temp, y
+	min = new Vector()
+	max = new Vector()
+	min.append(0,5,5)
+	max.append(35,30,30)
+	for i=1, 3 {
+		g.beginline
+		for (temp=min.x[i-1]; temp <= max.x[i-1]; temp += 5) {
+			print i, temp
+			y = fig3vel(temp, i)
+			g.line(temp, log10(y))
+			g.flush
+		}
+	}
+}
+
+pl()
+print "normal velocity = ", fig3vel(18.5, 0)

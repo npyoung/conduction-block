@@ -1,0 +1,25 @@
+load_file("nrngui.hoc")
+objectvar save_window_, rvp_
+objectvar scene_vector_[4]
+objectvar ocbox_, ocbox_list_, scene_, scene_list_
+{ocbox_list_ = new List()  scene_list_ = new List()}
+{pwman_place(0,0,0)}
+{
+save_window_ = new Graph(0)
+save_window_.size(0,2,0.5,2)
+scene_vector_[3] = save_window_
+{save_window_.view(0, 0.5, 2, 1.5, 693, 26, 410.88, 454.72)}
+g = save_window_
+save_window_.save_name("g")
+save_window_.label(0.093385, 1.13478, "nodal cap", 1, 1, 0, 0, 1)
+save_window_.label(1.43083, 1.16524, "axoplasm conduct", 1, 1, 0, 0, 1)
+save_window_.label(1.46423, 0.829191, "myelin cap", 1, 1, 0, 0, 1)
+save_window_.label(0.314601, 0.129946, "Relative Parameter Value", 2, 1, 0, 0, 1)
+save_window_.label(0.0324676, 0.945423, "Relative Conduction Velocity", 2, 1, 0, 0, 1)
+save_window_.label(0.0747663, 1.01882, "internode length", 1, 1, 0, 0, 1)
+save_window_.label(0.0803738, 0.920021, "nodal area", 1, 1, 0, 0, 1)
+save_window_.label(0.37757, 0.775616, "Gbar", 1, 1, 0, 0, 1)
+save_window_.label(1.39252, 1.54704, "diameter", 1, 1, 0, 0, 1)
+}
+objectvar scene_vector_[1]
+{doNotify()}
